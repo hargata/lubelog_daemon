@@ -15,7 +15,12 @@ namespace LubeLogDaemon.External
     }
     public class CachedReminders: ICachedReminders
     {
+        private int _daysToCache;
         private List<Reminder> _cachedReminders { get; set; } = new List<Reminder>();
+        public CachedReminders(IConfiguration _config)
+        {
+            _daysToCache = int.Parse(_config[nameof(DaemonConfig.DaysToCache)] ?? "1") * -1;
+        }
         public void AddReminder(Reminder reminder)
         {
             if (!CheckIfReminderExists(reminder))
@@ -32,7 +37,7 @@ namespace LubeLogDaemon.External
         public void RemoveExpiredReminderIds()
         {
             //remove any reminders that have been cached for more than 1 day.
-            _cachedReminders.RemoveAll(x=> x.DateAdded < DateTime.UtcNow.AddDays(-1));
+            _cachedReminders.RemoveAll(x=> x.DateAdded < DateTime.UtcNow.AddDays(_daysToCache));
         }
         public void ClearReminders()
         {

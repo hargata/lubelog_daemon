@@ -1,6 +1,7 @@
 {
 	"instanceUrl": "your/lubelogger/domain",
 	"apiKey": "faketoken",
+	"daysToCache": "1",
 	"urgenciesTracked": [
 		"urgent",
 		"veryurgent",

@@ -8,6 +8,8 @@ namespace LubeLogDaemon.Models
         public string InstanceUrl { get; set; } = string.Empty;
         [JsonPropertyName("apiKey")]
         public string ApiKey { get; set; } = string.Empty;
+        [JsonPropertyName("daysToCache")]
+        public string DaysToCache { get; set; } = "1"
         [JsonPropertyName("urgenciesTracked")]
         public List<string> UrgenciesTracked { get; set; } = new List<string>();
         [JsonPropertyName("webHookForwards")]
