@@ -9,13 +9,17 @@ namespace LubeLogDaemon.Models
         [JsonPropertyName("apiKey")]
         public string ApiKey { get; set; } = string.Empty;
         [JsonPropertyName("daysToCache")]
-        public string DaysToCache { get; set; } = "1"
+        public string DaysToCache { get; set; } = "1";
         [JsonPropertyName("urgenciesTracked")]
         public List<string> UrgenciesTracked { get; set; } = new List<string>();
         [JsonPropertyName("webHookForwards")]
         public List<string> WebHookForwards { get; set; } = new List<string>();
         [JsonPropertyName("notificationConfigs")]
         public List<NotificationConfig> NotificationConfigs { get; set; } = new List<NotificationConfig>();
+        [JsonPropertyName("checkDateReminders")]
+        public string CheckDateReminders { get; set; } = "False";
+        [JsonPropertyName("hourToCheck")]
+        public string HourToCheck { get; set; } = "0";
     }
     public enum NotificationType
     {

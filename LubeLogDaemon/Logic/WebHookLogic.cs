@@ -21,7 +21,8 @@ namespace LubeLogDaemon.Logic
         private List<string> _webHookForwards;
         private List<string> _urgenciesTracked;
         private List<NotificationConfig> _notificationConfigs;
-        public WebHookLogic(ICachedReminders reminderCache, IHttpClientFactory httpClientFactory, IConfiguration _config)
+        private ILogger<WebHookLogic> _logger;
+        public WebHookLogic(ICachedReminders reminderCache, IHttpClientFactory httpClientFactory, IConfiguration _config, ILogger<WebHookLogic> logger)
         {
             _reminderCache = reminderCache;
             _httpClientFactory = httpClientFactory;
@@ -30,6 +31,7 @@ namespace LubeLogDaemon.Logic
             _webHookForwards = _config.GetSection(nameof(DaemonConfig.WebHookForwards)).Get<List<string>>() ?? new List<string>();
             _urgenciesTracked = _config.GetSection(nameof(DaemonConfig.UrgenciesTracked)).Get<List<string>>() ?? new List<string>();
             _notificationConfigs = _config.GetSection(nameof(DaemonConfig.NotificationConfigs)).Get<List<NotificationConfig>>() ?? new List<NotificationConfig>();
+            _logger = logger;
         }
         public async Task RefreshReminders()
         {
@@ -50,7 +52,7 @@ namespace LubeLogDaemon.Logic
         }
         private async Task SendReminderNotification(Reminder reminder)
         {
-            Console.WriteLine($"Send Notification for Id {reminder.Id}");
+            _logger.LogInformation($"Send Notification for Id {reminder.Id}");
             var httpClient = _httpClientFactory.CreateClient();
             var vehicleInfo = await httpClient.GetFromJsonAsync<List<VehicleInfo>>($"{_lubeloggerUrl}/api/vehicle/info?apiKey={_apiKey}&vehicleId={reminder.VehicleId}");
             var notificationTitle = string.Empty;
@@ -211,7 +213,10 @@ namespace LubeLogDaemon.Logic
             var httpClient = _httpClientFactory.CreateClient();
             foreach(string webHookForward in _webHookForwards)
             {
-                await httpClient.PostAsJsonAsync(webHookForward, payload);
+                if (!string.IsNullOrWhiteSpace(webHookForward))
+                {
+                    await httpClient.PostAsJsonAsync(webHookForward, payload);
+                }
             }
         }
         private string GetVehicleIdentifier(Vehicle vehicle)
@@ -275,7 +280,7 @@ namespace LubeLogDaemon.Logic
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex.Message);
             }
             return false;
         }

@@ -1,5 +1,6 @@
 using LubeLogDaemon.External;
 using LubeLogDaemon.Logic;
+using LubeLogDaemon.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,12 @@ builder.Services.AddSingleton<ICachedReminders, CachedReminders>();
 builder.Services.AddSingleton<IWebHookLogic, WebHookLogic>();
 builder.Services.AddHttpClient();
 builder.Services.AddControllers();
+
+var backgroundServiceEnabled = bool.Parse(builder.Configuration[nameof(DaemonConfig.CheckDateReminders)] ?? "False");
+if (backgroundServiceEnabled)
+{
+    builder.Services.AddHostedService<WebHookTimer>();
+}
 
 var app = builder.Build();
 

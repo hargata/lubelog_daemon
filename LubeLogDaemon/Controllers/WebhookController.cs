@@ -12,10 +12,12 @@ namespace LubeLogDaemon.Controllers
     {
         private ICachedReminders _reminderCache;
         private IWebHookLogic _logic;
-        public WebhookController(ICachedReminders reminderCache, IWebHookLogic logic)
+        private ILogger<WebhookController> _logger;
+        public WebhookController(ICachedReminders reminderCache, IWebHookLogic logic, ILogger<WebhookController> logger)
         {
             _reminderCache = reminderCache;
             _logic = logic;
+            _logger = logger;
         }
         [Route("ingest")]
         [HttpPost]
@@ -24,7 +26,7 @@ namespace LubeLogDaemon.Controllers
             var stringifiedPayload = JsonSerializer.Serialize(payload);
             await _logic.RefreshReminders();
             await _logic.ForwardWebHookPayload(payload);
-            Console.WriteLine(stringifiedPayload);
+            _logger.LogInformation(stringifiedPayload);
             return Ok();
         }
         [Route("reminders")]
@@ -42,7 +44,7 @@ namespace LubeLogDaemon.Controllers
         }
         [Route("config")]
         [HttpPost]
-        public IActionResult SaveConfig([FromBody] DaemonConfig config)
+        public IActionResult SaveConfig(DaemonConfig config)
         {
             if (_logic.WriteDaemonConfig(config))
             {
