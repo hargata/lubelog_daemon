@@ -10,6 +10,7 @@ namespace LubeLogDaemon.Logic
     {
         Task RefreshReminders();
         Task ForwardWebHookPayload(WebHookPayload payload);
+        bool WriteDaemonConfig(DaemonConfig inputConfig);
     }
     public class WebHookLogic: IWebHookLogic
     {
@@ -260,6 +261,23 @@ namespace LubeLogDaemon.Logic
                     return "7107965";
             }
             return string.Empty;
+        }
+        public bool WriteDaemonConfig(DaemonConfig inputConfig)
+        {
+            try
+            {
+                if (!Directory.Exists("config"))
+                {
+                    Directory.CreateDirectory("config");
+                }
+                File.WriteAllText("config/daemonConfig.json", JsonSerializer.Serialize(inputConfig));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return false;
         }
     }
 }

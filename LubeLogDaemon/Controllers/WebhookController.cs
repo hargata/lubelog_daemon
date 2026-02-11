@@ -40,5 +40,15 @@ namespace LubeLogDaemon.Controllers
             _reminderCache.ClearReminders();
             return Ok();
         }
+        [Route("config")]
+        [HttpPost]
+        public IActionResult SaveConfig([FromBody] DaemonConfig config)
+        {
+            if (_logic.WriteDaemonConfig(config))
+            {
+                return Ok();
+            }
+            return Problem();
+        }
     }
 }
