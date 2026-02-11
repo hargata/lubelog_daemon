@@ -1,0 +1,23 @@
+{
+	"instanceUrl": "your/lubelogger/domain",
+	"apiKey": "faketoken",
+	"urgenciesTracked": [
+		"urgent",
+		"veryurgent",
+		"pastdue"
+	],
+	"webHookForwards": [
+		"your/webhooks/domain"
+	],
+	"notificationConfigs": [
+		{
+			"configurationType": 2,
+			"instanceUrl": "your/ntfy/domain/lubelogger-{vehicleId}",
+			"titleInHeader": true,
+			"titleHeader": "Title",
+			"priorityInHeader": true,
+			"priorityHeader": "Priority",
+			"priorities": [3, 4, 5]
+		}
+	]
+}

@@ -1,0 +1,19 @@
+{
+	"instanceUrl": "your/lubelogger/domain",
+	"apiKey": "faketoken",
+	"urgenciesTracked": [
+		"urgent",
+		"veryurgent",
+		"pastdue"
+	],
+	"webHookForwards": [
+		"your/webhooks/domain"
+	],
+	"notificationConfigs": [
+		{
+			"configurationType": 3,
+			"instanceUrl": "your/gotify/domain/message?token=<yourgotifytoken>",
+			"priorities": [3, 5, 10]
+		}
+	]
+}

@@ -1,0 +1,17 @@
+{
+	"instanceUrl": "your/lubelogger/domain",
+	"apiKey": "faketoken",
+	"urgenciesTracked": [
+		"urgent",
+		"veryurgent",
+		"pastdue"
+	],
+	"webHookForwards": [
+		"your/webhooks/domain"
+	],
+	"notificationConfigs": [
+		{
+			"configurationType": 0
+		}
+	]
+}
