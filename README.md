@@ -46,3 +46,7 @@ docker compose up
 | urgenciesTracked    | List of urgencies the service should track when reminders move into these statuses          | "noturgent", "urgent", "veryurgent", "pastdue"    |
 | webHookForwards     | List of webhooks to forward the original webhook payload to                                 | "webhooksite1", "webhooksite2"                    |
 | notificationConfigs | List of notification configs                                                                | See "SampleConfigs"                               |
+
+## Quirks
+
+If you have {vehicleId} in any of the URL's, they will always be substituted with the Id of the vehicle, this allows you to send different notifications depending on the vehicle, see the ntfy sampleconfig for an example
