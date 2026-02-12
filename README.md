@@ -2,7 +2,9 @@
 
 ## What
 
-This is a sidecar service for LubeLogger that allows for real-time integration with notification systems such as Ntfy, Gotify, and Discord Webhooks.
+This is a daemon service for LubeLogger that allows for real-time integration with notification systems such as Ntfy, Gotify, and Discord Webhooks.
+
+No crons nor databases, all cached reminders are stored entirely within memory. A small volume is required for the Docker container in order to persist user configuration.
 
 ## How it works
 
