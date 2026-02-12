@@ -20,7 +20,7 @@ This should run within a private network where it can access your LubeLogger ins
 
 ## Getting Started
 
-1. Clone the docker-compose.yml file
+1. Clone the [docker-compose.yml](https://github.com/hargata/lubelog_daemon/blob/main/docker-compose.yml) file
 2. Open a terminal and run
 ```
 docker compose pull
@@ -32,7 +32,8 @@ docker compose up
 6. Replace the placeholders with your data
 7. Make a POST request to `http://localhost:40750/webhook/config` with the content as the JSON body
 8. Restart the service
-9. Send a test notification to verify that everything is working
+9. Configure your LubeLogger instance so that webhook payload are sent to the daemon service
+10. Send a test notification to verify that everything is working
 
 ### Configuration
 | Key                 | Description                                                                                 | Example Value                                     |
