@@ -12,10 +12,12 @@ builder.Services.AddSingleton<IWebHookLogic, WebHookLogic>();
 builder.Services.AddHttpClient();
 builder.Services.AddControllers();
 
-var backgroundServiceEnabled = bool.Parse(builder.Configuration[nameof(DaemonConfig.CheckDateReminders)] ?? "False");
-if (backgroundServiceEnabled)
+if (bool.TryParse(builder.Configuration[nameof(DaemonConfig.CheckDateReminders)] ?? string.Empty, out bool backgroundServiceEnabled))
 {
-    builder.Services.AddHostedService<WebHookTimer>();
+    if (backgroundServiceEnabled)
+    {
+        builder.Services.AddHostedService<WebHookTimer>();
+    }
 }
 
 var app = builder.Build();
