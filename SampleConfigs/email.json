@@ -1,18 +1,20 @@
 {
-	"instanceUrl": "your/lubelogger/domain",
-	"apiKey": "faketoken",
-	"daysToCache": "1",
-	"urgenciesTracked": [
-		"urgent",
-		"veryurgent",
-		"pastdue"
-	],
-	"webHookForwards": [
-		"your/webhooks/domain"
-	],
-	"notificationConfigs": [
-		{
-			"configurationType": 0
-		}
-	]
+   "instanceUrl":"your/lubelogger/domain",
+   "apiKey":"faketoken",
+   "hourToCheck":"5",
+   "checkDateReminders":"true",
+   "daysToCache":"1",
+   "urgenciesTracked":[
+      "urgent",
+      "veryurgent",
+      "pastdue"
+   ],
+   "webHookForwards":[
+      "your/webhooks/domain"
+   ],
+   "notificationConfigs":[
+      {
+         "configurationType":0
+      }
+   ]
 }

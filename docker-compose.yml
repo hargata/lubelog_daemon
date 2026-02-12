@@ -1,0 +1,15 @@
+---
+
+services:
+  app:
+    image: ghcr.io/hargata/lubelogger_daemon:latest
+    restart: unless-stopped
+    # volumes used to keep data persistent
+    volumes:
+      - config:/App/config
+    # expose port and/or use serving via traefik
+    ports:
+      - 40750:8080
+
+volumes:
+  config:
