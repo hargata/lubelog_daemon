@@ -6,7 +6,7 @@ This is a sidecar service for LubeLogger that allows for real-time integration w
 
 ## How it works
 
-<img width="793" height="311" alt="image" src="https://github.com/user-attachments/assets/dce1c1f7-408d-42e5-8b24-51ecdc62ad66" />
+<img width="789" height="315" alt="image" src="https://github.com/user-attachments/assets/dd4db522-007a-404f-8e7b-fc9e367f6b95" />
 
 This project essentially retrieves reminders from your LubeLogger instance and compares those reminders to a cached copy(stored in memory), if there are changes detected(i.e.: a reminder has moved from Not Urgent to Urgent), then it will fire off a notification payload to the integrated services.
 
@@ -20,20 +20,7 @@ This should run within a private network where it can access your LubeLogger ins
 
 ## Getting Started
 
-1. Clone the [docker-compose.yml](https://github.com/hargata/lubelog_daemon/blob/main/docker-compose.yml) file
-2. Open a terminal and run
-```
-docker compose pull
-docker compose up
-```
-3. The daemon service will start listening at `localhost:40750` by default, you can change this in `docker-compose.yml`
-4. Check the sample configurations in [SampleConfigs](https://github.com/hargata/lubelog_daemon/tree/main/SampleConfigs)
-5. Find the config file for the integration you want and copy the content
-6. Replace the placeholders with your data
-7. Make a POST request to `http://localhost:40750/webhook/config` with the content as the JSON body
-8. Restart the service
-9. Configure your LubeLogger instance so that webhook payload are sent to the daemon service
-10. Send a test notification to verify that everything is working
+[Video Walkthrough and Documentation](https://github.com/hargata/lubelog_daemon/wiki/Getting-Started)
 
 ### Configuration
 | Key                 | Description                                                                                 | Example Value                                     |
