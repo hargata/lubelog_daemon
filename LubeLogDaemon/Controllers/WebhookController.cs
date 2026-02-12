@@ -40,7 +40,7 @@ namespace LubeLogDaemon.Controllers
         public IActionResult ClearReminders()
         {
             _reminderCache.ClearReminders();
-            return Ok();
+            return Ok("Reminders Cleared");
         }
         [Route("config")]
         [HttpPost]
@@ -48,7 +48,7 @@ namespace LubeLogDaemon.Controllers
         {
             if (_logic.WriteDaemonConfig(config))
             {
-                return Ok();
+                return Ok("Restart Service to Apply Changes");
             }
             return Problem();
         }
