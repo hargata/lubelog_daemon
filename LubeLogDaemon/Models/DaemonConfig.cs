@@ -20,6 +20,8 @@ namespace LubeLogDaemon.Models
         public bool CheckDateReminders { get; set; }
         [JsonPropertyName("hourToCheck")]
         public int HourToCheck { get; set; }
+        [JsonPropertyName("minuteToCheck")]
+        public int MinuteToCheck { get; set; }
     }
     public enum NotificationType
     {
@@ -27,7 +29,8 @@ namespace LubeLogDaemon.Models
         WebHook = 1,
         Ntfy = 2,
         Gotify = 3,
-        Discord = 4
+        Discord = 4,
+        Apprise = 5
     }
     public class NotificationConfig
     {

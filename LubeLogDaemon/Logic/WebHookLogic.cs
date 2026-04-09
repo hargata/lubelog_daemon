@@ -10,7 +10,7 @@ namespace LubeLogDaemon.Logic
     {
         Task RefreshReminders();
         Task ForwardWebHookPayload(WebHookPayload payload);
-        bool WriteDaemonConfig(DaemonConfig inputConfig);
+        bool WriteDaemonConfig(DaemonConfig inputConfig, string daemonPassword);
     }
     public class WebHookLogic: IWebHookLogic
     {
@@ -18,6 +18,7 @@ namespace LubeLogDaemon.Logic
         private readonly IHttpClientFactory _httpClientFactory;
         private string _lubeloggerUrl;
         private string _apiKey;
+        private string _daemonPassword;
         private List<string> _webHookForwards;
         private List<string> _urgenciesTracked;
         private List<NotificationConfig> _notificationConfigs;
@@ -31,6 +32,7 @@ namespace LubeLogDaemon.Logic
             _webHookForwards = _config.GetSection(nameof(DaemonConfig.WebHookForwards)).Get<List<string>>() ?? new List<string>();
             _urgenciesTracked = _config.GetSection(nameof(DaemonConfig.UrgenciesTracked)).Get<List<string>>() ?? new List<string>();
             _notificationConfigs = _config.GetSection(nameof(DaemonConfig.NotificationConfigs)).Get<List<NotificationConfig>>() ?? new List<NotificationConfig>();
+            _daemonPassword = _config["LL_DAEMON_PASSWORD"] ?? string.Empty;
             _logger = logger;
         }
         public async Task RefreshReminders()
@@ -205,6 +207,41 @@ namespace LubeLogDaemon.Logic
                             await httpClient.SendAsync(request);
                         }
                     break;
+                    case NotificationType.Apprise:
+                        {
+                            int priority = 0;
+                            if (notificationConfig.Priorities.Count() == _urgenciesTracked.Count())
+                            {
+                                //map priorities to urgencies
+                                int urgencyIndex = _urgenciesTracked.IndexOf(reminder.Urgency.ToLower());
+                                priority = notificationConfig.Priorities[urgencyIndex];
+                            }
+                            var request = new HttpRequestMessage(HttpMethod.Post, notificationConfig.InstanceUrl.Replace("{vehicleId}", reminder.VehicleId.ToString()));
+                            if (notificationConfig.Headers.Any())
+                            {
+                                foreach (var header in notificationConfig.Headers)
+                                {
+                                    request.Headers.Add(header.Key, header.Value);
+                                }
+                            }
+                            if (notificationConfig.TitleInHeader)
+                            {
+                                request.Headers.Add(notificationConfig.TitleHeader, notificationTitle);
+                            }
+                            if (notificationConfig.PriorityInHeader)
+                            {
+                                request.Headers.Add(notificationConfig.PriorityHeader, priority.ToString());
+                            }
+                            var reminderPayload = new ApprisePayload
+                            {
+                                Title = notificationTitle,
+                                Body = GetOneLineReminderDescription(reminder),
+                                Priority = priority
+                            };
+                            request.Content = new StringContent(JsonSerializer.Serialize(reminderPayload), Encoding.UTF8, "application/json");
+                            await httpClient.SendAsync(request);
+                        }
+                    break;
                 }
             }
         }
@@ -267,8 +304,16 @@ namespace LubeLogDaemon.Logic
             }
             return string.Empty;
         }
-        public bool WriteDaemonConfig(DaemonConfig inputConfig)
+        public bool WriteDaemonConfig(DaemonConfig inputConfig, string daemonPassword)
         {
+            //authentication
+            if (!string.IsNullOrWhiteSpace(_daemonPassword))
+            {
+                if (daemonPassword != _daemonPassword)
+                {
+                    return false;
+                }
+            }
             try
             {
                 if (!Directory.Exists("config"))
