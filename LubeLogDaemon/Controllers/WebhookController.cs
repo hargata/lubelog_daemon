@@ -46,8 +46,11 @@ namespace LubeLogDaemon.Controllers
         [HttpPost]
         public IActionResult SaveConfig(DaemonConfig config)
         {
-            Request.Headers.TryGetValue("x-daemon-password", out var daemonPasswords);
-            string daemonPassword = daemonPasswords.FirstOrDefault() ?? string.Empty;
+            string daemonPassword = string.Empty;
+            if (Request.Headers.TryGetValue("x-daemon-password", out var daemonPasswords))
+            {
+                daemonPassword = daemonPasswords.FirstOrDefault() ?? string.Empty;
+            }
             if (_logic.WriteDaemonConfig(config, daemonPassword))
             {
                 return Ok("Restart Service to Apply Changes");
