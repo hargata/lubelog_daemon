@@ -14,7 +14,8 @@ namespace LubeLogDaemon.Logic
             _logic = logic;
             _logger = logger;
             var targetHour = int.Parse(_config[nameof(DaemonConfig.HourToCheck)] ?? "0");
-            _targetTime = new TimeSpan(targetHour, 0, 0);
+            var targetMinute = int.Parse(_config[nameof(DaemonConfig.MinuteToCheck)] ?? "0");
+            _targetTime = new TimeSpan(targetHour, targetMinute, 0);
             _nextRunTime = DateTime.UtcNow.Date + _targetTime;
             if (DateTime.UtcNow > _nextRunTime)
             {

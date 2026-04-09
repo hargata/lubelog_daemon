@@ -3,6 +3,8 @@
 services:
   app:
     image: ghcr.io/hargata/lubelogger_daemon:latest
+    # environment:
+    #  - LL_DAEMON_PASSWORD=
     restart: unless-stopped
     # volumes used to keep data persistent
     volumes:
