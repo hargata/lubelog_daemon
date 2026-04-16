@@ -1,3 +1,7 @@
+# This Project is Now Archived #
+
+Features have been integrated and folded into LubeLogger 1.6.4
+
 # LubeLogger Daemon
 
 ## What
